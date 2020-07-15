@@ -1,3 +1,5 @@
+## This is for beginger 
+
 ## Commands:
   
   1) kubectl get all ---Give us all information about pods, ReplicaSets and deployment that created
