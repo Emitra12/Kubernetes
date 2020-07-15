@@ -1,4 +1,4 @@
-## This is for Administrator (CKA)
+## This is for beginners
 
 ## Commands:
   
