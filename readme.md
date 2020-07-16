@@ -7,8 +7,10 @@
   3) kubectl get pods -o wide
   4) kubectl delete pod <podame>
   5) kubectl replace -f replicaset-defination.yaml (after editing the file)
-  6) kubectl scale --replicas=6 -f replicaset-defination.yaml (without editing file)
+  6) kubectl scale --replicas=6 -f/replicaset replicaset-defination.yaml (without editing file)
   7) kubectl delete ReplicaSet <name>
+  8) kubectl edit replicaset replicasetname
+  8) kubectl get pod -n kube-system
 
 ## Deployements:
   
@@ -57,3 +59,27 @@
    2) /etc/Network/interfaces -- to assign the static ip address to the node
    3) ipconfig interface-name ipaddress ---to assign the temp id address to node
    4) swapoff -a -- to off the swap  and /etc/fstab -- comments out the swap line
+
+### Focus more on below commands for real time exam preparation:
+
+## Create an NGINX Pod
+
+kubectl run --generator=run-pod/v1 nginx --image=nginx
+
+## Generate POD Manifest YAML file (-o yaml). Don't create it(--dry-run)
+
+kubectl run --generator=run-pod/v1 nginx --image=nginx --dry-run -o yaml
+
+## Create a deployment
+
+kubectl create deployment --image=nginx nginx
+
+## Generate Deployment YAML file (-o yaml). Don't create it(--dry-run)
+
+kubectl create deployment --image=nginx nginx --dry-run -o yaml
+
+## Generate Deployment YAML file (-o yaml). Don't create it(--dry-run) with 4 Replicas (--replicas=4)
+
+kubectl create deployment --image=nginx nginx --dry-run -o yaml > nginx-deployment.yaml
+
+## Save it to a file, make necessary changes to the file (for example, adding more replicas) and then create the deployment.
