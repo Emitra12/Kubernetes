@@ -35,6 +35,15 @@
   2) ClusterIP --- Default one
   3) Loadbalancer
 
+## Namespaces:
+   1) kubectl get pods --namspace=dev/prod
+   2) kubectl config set-context $(kubectl config curent-context) --namespace=dev/prod ---to set permannet namespace
+   3) kubectl get pods --all-namespaces
+   4) kubectl create namespace dev/prod/other
+   5) service name.namespace.subdomain.localdomain (db-service.dev.scv.cluster.local) -- to communicate one namespace service to other namespace service
+   6) resourcequota file in namespace
+   7) kubectl get namespaces
+   
 ## Kubernetes Microservices Architecture:
    
    Common voting application
@@ -64,11 +73,33 @@
 
 ## Create an NGINX Pod
 
+kubectl run nginx --image=nginx
 kubectl run --generator=run-pod/v1 nginx --image=nginx
+kubectl run --generator=run-pod/v1 redis --image=redis --namespace=finance
 
 ## Generate POD Manifest YAML file (-o yaml). Don't create it(--dry-run)
 
 kubectl run --generator=run-pod/v1 nginx --image=nginx --dry-run -o yaml
+
+--dry-run -- creates the resources on cluster 
+--dry-run=client -- will not create resource on cluster , its just test your commands 
+-o yaml -- output the resource defination in yaml format
+
+## Create a Service named redis-service of type ClusterIP to expose pod redis on port 6379
+
+kubectl expose pod redis --port=6379 --name redis-service --dry-run=client -o yaml (This will automatically use the pod's labels as selectors)
+
+or 
+
+kubectl create service clusterip redis --tcp=6379:6379 --dry-run=client -o yaml
+
+ (This will not use the pods labels as selectors, instead it will assume selectors as app=redis. You cannot pass in selectors as an option. So it does not work very well if your pod has a different label set. So generate the file and modify the selectors before creating the service)
+ 
+kubectl expose pod nginx --port=80 --name nginx-service --type=NodePort --dry-run=client -o yaml 
+
+or 
+
+kubectl create service nodeport nginx --tcp=80:80 --node-port=30080 --dry-run=client -o yaml
 
 ## Create a deployment
 
@@ -83,3 +114,4 @@ kubectl create deployment --image=nginx nginx --dry-run -o yaml
 kubectl create deployment --image=nginx nginx --dry-run -o yaml > nginx-deployment.yaml
 
 ## Save it to a file, make necessary changes to the file (for example, adding more replicas) and then create the deployment.
+
